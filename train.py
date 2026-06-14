@@ -29,9 +29,8 @@ def run_for_window(returns, macro_df, window_days):
     macro_window = macro_df.loc[ret_window.index]
     if len(macro_window) < len(ret_window):
         return None
-    # Compute net information outflow for all ETFs at once
     returns_matrix = ret_window.values
-    net_te = net_info_outflow(returns_matrix, macro_window, lag=config.LAG, n_bins=config.N_BINS, num_permutations=config.NUM_PERMUTATIONS)
+    net_te = net_info_outflow(returns_matrix, macro_window, lag=config.LAG, n_bins=config.N_BINS)
     raw_scores = {ticker: float(net_te[i]) for i, ticker in enumerate(ret_window.columns)}
     norm_scores = normalize_scores(raw_scores)
     sorted_norm = sorted(norm_scores.items(), key=lambda x: x[1], reverse=True)
@@ -55,7 +54,6 @@ def main():
         "windows": config.WINDOWS,
         "lag": config.LAG,
         "n_bins": config.N_BINS,
-        "num_permutations": config.NUM_PERMUTATIONS,
         "macro_vars": config.MACRO_VARS,
         "universes": {}
     }
